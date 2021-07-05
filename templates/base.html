@@ -1,10 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{% include 'head.html' %}
+
 <body>
-    <h1>Hello world1</h1>
+{## 높이, 배경색, 마진, 직각인 모서리를 둥글둥글하게 만들어주는 정도#}
+{#장고가 개입하기 위해서 #}
+{% include 'header.html' %}
+
+{% block content %}
+{% endblock %}
+
+{% include 'footer.html' %}
+
+
 </body>
 </html>
