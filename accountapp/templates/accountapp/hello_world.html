@@ -2,15 +2,13 @@
 {#base.html 을 가져와서 사용하겠다. 상속같은 느낌#}
 
 {% block content %}
-
-    <div style="margin: 2rem; text-align: center;"
+    <div style="margin: 2rem; text-align: center;">
         <h1>METHOD</h1>
-
+        <form action="/account/hello_world/" method="post">
+            {% csrf_token %}
+            <input type="submit" class="btn btn-dark rounded-pill px-5">
+        </form>
         <h3>{{  text   }}</h3>
-
-
     </div>
-
-
 
 {% endblock %}
