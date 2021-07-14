@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{#base.html 안에 있는 block content 부분만 수정하겠다.#}
+{% block content %}
+    <div class="text-center">
+        <div class="m-5">
+            <h4>Login</h4>
+        </div>
+        <div>
+{#            action : 요청을 보낼 주소. 원래 / 를 썼었는데 우리는 name을 정해놨기 때문에 그걸 사용. reverse 말고 url씀#}
+            <form action="{% url 'accountapp:login' %}" method="post">
+                {% csrf_token %}
+{#                만들어준 class 에서 만든 form을 단순 출력#}
+                {{ form }}
+                <div class="m-5">
+                    {#                트리거 , px-5 : padding x 축 5 #}
+                    <input type="submit" class='btn btn-dark rounded-pill px-5'>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}
