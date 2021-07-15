@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
+{% load bootstrap4 %}
 {#base.html 안에 있는 block content 부분만 수정하겠다.#}
 {% block content %}
-    <div class="text-center">
+    <div class="text-center mw-500 m-auto">
         <div class="m-5">
             <h4>Login</h4>
         </div>
@@ -10,7 +11,7 @@
             <form action="{% url 'accountapp:login' %}" method="post">
                 {% csrf_token %}
 {#                만들어준 class 에서 만든 form을 단순 출력#}
-                {{ form }}
+                {% bootstrap_form form %}
                 <div class="m-5">
                     {#                트리거 , px-5 : padding x 축 5 #}
                     <input type="submit" class='btn btn-dark rounded-pill px-5'>
