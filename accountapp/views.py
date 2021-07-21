@@ -33,7 +33,7 @@ def hello_world(request):
         # redirect 해라. 어디로? reverse ~~
         # 이렇게 하면, 로그아웃 상태에서 hello_world로 가려고 하면 안 넘어가고 login 페이지로 감.
         # 이 인증과정을 어디에 추가해야할까? update, detail veiw에!
-        return HttpResponseRedirect('accountapp:login')
+        return HttpResponseRedirect(reverse('accountapp:login'))
 
 class AccountCreateView(CreateView):
     model = User
@@ -46,6 +46,8 @@ class AccountDetailView(DetailView):
     context_object_name = 'target_user'
     template_name = 'accountapp/detail.html'
 
+@method_decorator(login_required, 'get')
+@method_decorator(login_required, 'post')
 class AccountUpdateView(UpdateView):
     model = User
     form_class = AccountCreationForm
@@ -53,34 +55,36 @@ class AccountUpdateView(UpdateView):
     success_url = reverse_lazy('accountapp:hello_world')
     template_name = 'accountapp/update.html'
 
-    def get(self, request, *args, **kwargs):
-        # and : 이 user가 해당 페이지 주인이 맞는지 확인. self.get_object() self는 저 view 자체를 의미 -> target user를 가져오기
-        if request.user.is_authenticated and self.get_object() == request.user:
-            return super().get(request, *args, **kwargs)
-        else:
-            return HttpResponseForbidden()
+    # def get(self, request, *args, **kwargs):
+    #     # and : 이 user가 해당 페이지 주인이 맞는지 확인. self.get_object() self는 저 view 자체를 의미 -> target user를 가져오기
+    #     if request.user.is_authenticated and self.get_object() == request.user:
+    #         return super().get(request, *args, **kwargs)
+    #     else:
+    #         return HttpResponseForbidden()
+    #
+    #     def post(self, request, *args, **kwargs):
+    #         if request.user.is_authenticated and self.get_object() == request.user:
+    #             return super().post(request, *args, **kwargs)  # 부모 메소드에서 pos 불러오기
+    #         else:
+    #             return HttpResponseForbidden()
 
-        def post(self, request, *args, **kwargs):
-            if request.user.is_authenticated and self.get_object() == request.user:
-                return super().post(request, *args, **kwargs)  # 부모 메소드에서 pos 불러오기
-            else:
-                return HttpResponseForbidden()
-
+@method_decorator(login_required, 'get')
+@method_decorator(login_required, 'post')
 class AccountDeleteView(DeleteView):
     model = User
     context_object_name = 'target_user'
     success_url = reverse_lazy('accountapp:hello_world')
     template_name = 'accountapp/delete.html'
     
-    def get(self, request, *args, **kwargs):
-        # and : 이 user가 해당 페이지 주인이 맞는지 확인. self.get_object() self는 저 view 자체를 의미 -> target user를 가져오기
-        if request.user.is_authenticated and self.get_object() == request.user:
-            return super().get(request, *args, **kwargs)
-        else:
-            return HttpResponseForbidden()
-
-        def post(self, request, *args, **kwargs):
-            if request.user.is_authenticated and self.get_object() == request.user:
-                return super().post(request, *args, **kwargs)  # 부모 메소드에서 pos 불러오기
-            else:
-                return HttpResponseForbidden()
+    # def get(self, request, *args, **kwargs):
+    #     # and : 이 user가 해당 페이지 주인이 맞는지 확인. self.get_object() self는 저 view 자체를 의미 -> target user를 가져오기
+    #     if request.user.is_authenticated and self.get_object() == request.user:
+    #         return super().get(request, *args, **kwargs)
+    #     else:
+    #         return HttpResponseForbidden()
+    #
+    #     def post(self, request, *args, **kwargs):
+    #         if request.user.is_authenticated and self.get_object() == request.user:
+    #             return super().post(request, *args, **kwargs)  # 부모 메소드에서 pos 불러오기
+    #         else:
+    #             return HttpResponseForbidden()
