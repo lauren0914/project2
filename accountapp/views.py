@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render
 
 # Create your views here.
@@ -54,16 +54,17 @@ class AccountUpdateView(UpdateView):
     template_name = 'accountapp/update.html'
 
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
+        # and : 이 user가 해당 페이지 주인이 맞는지 확인. self.get_object() self는 저 view 자체를 의미 -> target user를 가져오기
+        if request.user.is_authenticated and self.get_object() == request.user:
             return super().get(request, *args, **kwargs)
         else:
-            return HttpResponseRedirect(reverse('accountapp:login'))
+            return HttpResponseForbidden()
 
         def post(self, request, *args, **kwargs):
-            if request.user.is_authenticated:
+            if request.user.is_authenticated and self.get_object() == request.user:
                 return super().post(request, *args, **kwargs)  # 부모 메소드에서 pos 불러오기
             else:
-                return HttpResponseRedirect(reverse('accountapp:login'))
+                return HttpResponseForbidden()
 
 class AccountDeleteView(DeleteView):
     model = User
@@ -72,13 +73,14 @@ class AccountDeleteView(DeleteView):
     template_name = 'accountapp/delete.html'
     
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
+        # and : 이 user가 해당 페이지 주인이 맞는지 확인. self.get_object() self는 저 view 자체를 의미 -> target user를 가져오기
+        if request.user.is_authenticated and self.get_object() == request.user:
             return super().get(request, *args, **kwargs)
         else:
-            return HttpResponseRedirect(reverse('accountapp:login'))
+            return HttpResponseForbidden()
 
         def post(self, request, *args, **kwargs):
-            if request.user.is_authenticated:
+            if request.user.is_authenticated and self.get_object() == request.user:
                 return super().post(request, *args, **kwargs)  # 부모 메소드에서 pos 불러오기
             else:
-                return HttpResponseRedirect(reverse('accountapp:login'))
+                return HttpResponseForbidden()
