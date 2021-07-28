@@ -8,7 +8,9 @@
         </div>
         <div>
 {#            action : 요청을 보낼 주소. 원래 / 를 썼었는데 우리는 name을 정해놨기 때문에 그걸 사용. reverse 말고 url씀#}
-            <form action="{% url 'profileapp:create' %}" method="post">
+            <form action="{% url 'profileapp:create' %}"
+                  enctype="multipart/form-data"
+                  method="post">
                 {% csrf_token %}
 {#                만들어준 class 에서 만든 form을 단순 출력#}
 {#                -> bootstrap_form을 이용해서 form 을 출력#}

@@ -41,8 +41,10 @@ def hello_world(request):
 class AccountCreateView(CreateView):
     model = User
     form_class = UserCreationForm
-    success_url = reverse_lazy('accountapp:hello_world')
     template_name = 'accountapp/create.html'
+
+    def get_success_url(self):
+        return reverse('accountapp:detail', kwargs={'pk': self.object.pk})
 
 class AccountDetailView(DetailView):
     model = User
@@ -57,21 +59,10 @@ class AccountUpdateView(UpdateView):
     model = User
     form_class = AccountCreationForm
     context_object_name = 'target_user'
-    success_url = reverse_lazy('accountapp:hello_world')
     template_name = 'accountapp/update.html'
 
-    # def get(self, request, *args, **kwargs):
-    #     # and : 이 user가 해당 페이지 주인이 맞는지 확인. self.get_object() self는 저 view 자체를 의미 -> target user를 가져오기
-    #     if request.user.is_authenticated and self.get_object() == request.user:
-    #         return super().get(request, *args, **kwargs)
-    #     else:
-    #         return HttpResponseForbidden()
-    #
-    #     def post(self, request, *args, **kwargs):
-    #         if request.user.is_authenticated and self.get_object() == request.user:
-    #             return super().post(request, *args, **kwargs)  # 부모 메소드에서 pos 불러오기
-    #         else:
-    #             return HttpResponseForbidden()
+    def get_success_url(self):
+        return reverse('accountapp:detail', kwargs={'pk': self.object.pk})
 
 @method_decorator(has_ownership, 'get')
 @method_decorator(has_ownership, 'post')
