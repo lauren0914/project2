@@ -1,25 +1,54 @@
-{% extends 'base.html' %}}
+{#create.html 복사#}
 
+{% extends 'base.html' %}
+{#base.html 안에 있는 block content 부분만 수정하겠다.#}
 {% block content %}
-<div class="text-center mw-500 m-auto">
-    <div class="m-5">
-        <h4>{{ target_user.username }}</h4>
+    <div class="text-center mw-500 m-auto">
+        <div class="m-5">
+{#            닉네임있으면 닉네임 출력. 없으면 프로필 만드는 페이지로 연결#}
+            {% if target_user.profile %}
+{#                이미지도 출력#}
+                <img src="{{ target_user.profile.image.url }}"
+                     class='profile image m-4'
+                     alt="profile image">
+
+                <h2 class="NNS_B">
+                    {{ target_user.profile.nickname }}
+                    {% if target_user == user %}
+                    <a href="{% url 'profileapp:update' pk=target_user.profile.pk %}"
+                        class="material-icons round_button">
+                        edit
+                    </a>
+                    {% endif %}
+
+                </h2>
+                <h5>{{ target_user.profile.message }}</h5>
+            {% else %}
+            <h4>
+                <a href="{% url 'profileapp:create' %}">
+                    Create Profile
+                </a>
+            </h4>
+            {% endif %}
+        </div>
+        <div>
+            {{ target_user.date_joined }}
+        </div>
+{#    디테일 페이지의 url을 복사해서 로그아웃한 상태에서 검색해보니까 나온다 이거야!! 그러면 안 되지.#}
+{#        프로필 주인과 요청 보내고 있는 user와 같으면 보여주기(요청 보내고 잇는 user와 우리 데베에ㅓ 저장돼있는 target user 랑 같다면 보여줘라#}
+        {% if user == target_user %}
+        <div>
+            <a href="{% url 'accountapp:update' pk=target_user.pk %}">
+                Update Info
+            </a>
+        </div>
+        <div>
+            <a href="{% url 'accountapp:delete' pk=target_user.pk %}">
+                Quit
+            </a>
+        </div>
+        {% endif %}
     </div>
-    <div>
-       {{ target_user.date_joined }}
-    </div>
-    {% if user == target_user %}
-    <div>
-        <a href="{% url 'accountapp:update' pk=target_user.pk%}">
-            Update Info
-        </a>
-    </div>
-    <div>
-        <a href="{% url 'accountapp:delete' pk=target_user.pk%}">
-            Quit
-        </a>
-    </div>
-    {% endif %}
-</div>
+
 
 {% endblock %}
