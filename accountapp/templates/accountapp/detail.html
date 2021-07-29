@@ -31,20 +31,18 @@
             </h4>
             {% endif %}
         </div>
-        <div>
-            {{ target_user.date_joined }}
-        </div>
+
 {#    디테일 페이지의 url을 복사해서 로그아웃한 상태에서 검색해보니까 나온다 이거야!! 그러면 안 되지.#}
 {#        프로필 주인과 요청 보내고 있는 user와 같으면 보여주기(요청 보내고 잇는 user와 우리 데베에ㅓ 저장돼있는 target user 랑 같다면 보여줘라#}
         {% if user == target_user %}
         <div>
-            <a href="{% url 'accountapp:update' pk=target_user.pk %}">
-                Update Info
+            <a href="{% url 'accountapp:update' pk=target_user.pk %}"
+                class="material-icons round_button mx-1">
+                settings
             </a>
-        </div>
-        <div>
-            <a href="{% url 'accountapp:delete' pk=target_user.pk %}">
-                Quit
+            <a href="{% url 'accountapp:delete' pk=target_user.pk %}"
+                class="material-icons round_button mx-1">
+                close
             </a>
         </div>
         {% endif %}
