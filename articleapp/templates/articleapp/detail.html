@@ -1,37 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{#  부트스트랩에서 제공하는 클래스. 크기에 따라 왔다갔다하는, 마진도 적당히 주는#}
+{#    사진 중앙정렬, #}
     <div class="container text-center">
         <div class="my-5">
+            {#   게시글 제목, 글쓴이, 작성일자   #}
             <h1 class="NNS_B">{{ target_article.title }}</h1>
             <h4>{{ target_article.writer.profile.nickname }}</h4>
             <p>{{ target_article.created_at }}</p>
-
         </div>
 
         <hr>
 
         <div class="my-5">
+            {#   게시글 내용, 게시글 대표 이미지   #}
             <img src="{{ target_article.image.url }}"
                  class="article_image"
                  alt="">
             <div class="article_content my-5">
                 {{ target_article.content }}
             </div>
-
+            {% if target_article.writer == user %}
             <div>
                 <a href="{% url 'articleapp:update' pk=target_article.pk %}"
                    class="btn btn-success rounded-pill px-5">
-                   Update
+                    Update
                 </a>
 
                 <a href="{% url 'articleapp:delete' pk=target_article.pk %}"
                    class="btn btn-danger rounded-pill px-5">
-                   Delete
+                    Delete
                 </a>
-            </div>
-        </div>
 
+            </div>
+            {% endif %}
+        </div>
     </div>
+
+
 
 {% endblock %}
