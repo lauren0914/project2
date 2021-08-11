@@ -37,8 +37,9 @@ class ArticleCreateView(CreateView):
 
 
 # 모두가 볼 수 있도록 인증과정 없음
-class ArticleDetailView(DetailView):
+class ArticleDetailView(DetailView, FormMixin):
     model = Article
+    form_class = CommentCreationForm
     context_object_name = 'target_article'
     template_name = 'articleapp/detail.html'
 
@@ -46,7 +47,7 @@ class ArticleDetailView(DetailView):
 # 게시글 작성자만 가능하도록
 @method_decorator(article_ownership_required, 'get')
 @method_decorator(article_ownership_required, 'post')
-class ArticleUpdateView(UpdateView, FormMixin):
+class ArticleUpdateView(UpdateView):
     model = Article
     form_class = CommentCreationForm
     context_object_name = 'target_article'
