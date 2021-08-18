@@ -17,11 +17,12 @@
           border-radius: 1rem;
           {#  display 수직 방향으로 쌓이도록 설정 #}
           flex-direction: column;
-          box-shadow: 0 0 1rem grey;
         }
 
         .container img {
-            width: 100%;
+            width: 7rem;
+            height: 7rem;
+            object-fit: cover;
             border-radius: 1rem;
         {#    부모의 넓이를 그대로 가져감 #}
         }
@@ -35,7 +36,7 @@
                 <a href="{% url 'projectapp:detail' pk=project.pk %}">
                     <img src="{{ project.image.url }}" alt="">
                 </a>
-                <span class="my-2 NNS_B">{{ project.name }}</span>
+                <span class="my-2 NNS_B">{{ project.name | truncatechars:10 }}</span>
             </div>
         {% endfor %}
     </div>
