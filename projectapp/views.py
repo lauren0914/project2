@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, ListView
 from django.views.generic.list import MultipleObjectMixin
 
+from articleapp.models import Article
 from projectapp.forms import ProjectCreationForm
 from projectapp.models import Project
 
@@ -27,8 +28,8 @@ class ProjectDetailView(DetailView, MultipleObjectMixin):
 
     def get_context_data(self, **kwargs):
         # 조건에 맞는 애들만 필터링하겠다.
-        article_list = Article.objects.filter()
-        return super().get_context_data(**kwargs)
+        article_list = Article.objects.filter(project=self.object)
+        return super().get_context_data(object_list=article_list, **kwargs)
 
 
     # def get_success_url(self):
