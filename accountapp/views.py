@@ -8,12 +8,16 @@ from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic.list import MultipleObjectMixin
 
 from accountapp.decorators import account_ownership_required
 from accountapp.forms import AccountCreationForm
 from accountapp.models import HelloWorld
 
 # url에서 마지막에 숫자가 계정을 의미하는데. 그러니까 그 숫자만 바꾸면 다른 계정으로 접근 가능. 이거를 막자!!
+from articleapp.models import Article
+
+
 def hello_world(request):
     # 인증 과정 적어주기(다른 아이디에는 접근 안 되게). request 에는 요청에 대한 모든 정보가 들어있음. 누가 요청 보냈는지 객체. 가 들어있음
     # 이 요청을 보내는 user가 로그인이 되어있다면, 아래 과정을 실행시키고 아니라면~~ 아래에 작성.
@@ -46,10 +50,18 @@ class AccountCreateView(CreateView):
     def get_success_url(self):
         return reverse('accountapp:detail', kwargs={'pk': self.object.pk})
 
-class AccountDetailView(DetailView):
+class AccountDetailView(DetailView, MultipleObjectMixin):
     model = User
     context_object_name = 'target_user'
     template_name = 'accountapp/detail.html'
+
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        article_list = Article.objects.filter(writer=self.object)
+        return super().get_context_data(object_list=article_list,
+                                        **kwargs)
+
 
 has_ownership = [login_required, account_ownership_required]
 
