@@ -11,7 +11,7 @@
 
 {% for message in messages %}
     <div class="text-center">
-        <div class="btn btn-success round_button px-5">
+        <div class="btn btn-{{ message.tags }} round_button px-5">
             {{ message }}
         </div>
 
