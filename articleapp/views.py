@@ -23,7 +23,6 @@ from commentapp.forms import CommentCreationForm
 class ArticleCreateView(CreateView):
     model = Article
     form_class = ArticleCreationForm
-    # success_url = reverse_lazy('accountapp:hello_world')
     template_name = 'articleapp/create.html'
 
     # ????? 뭐가 문제? writer id 가 자동생성이 안 된다고?

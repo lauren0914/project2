@@ -18,29 +18,6 @@ from accountapp.models import HelloWorld
 from articleapp.models import Article
 
 
-def hello_world(request):
-    # 인증 과정 적어주기(다른 아이디에는 접근 안 되게). request 에는 요청에 대한 모든 정보가 들어있음. 누가 요청 보냈는지 객체. 가 들어있음
-    # 이 요청을 보내는 user가 로그인이 되어있다면, 아래 과정을 실행시키고 아니라면~~ 아래에 작성.
-    if request.user.is_authenticated:
-        # return HttpResponse('Hello World!')
-        if request.method == 'POST':
-            temp = request.POST.get('input')
-
-            new_data = HelloWorld()
-            new_data.text = temp
-            new_data.save()
-
-            return HttpResponseRedirect(reverse('accountapp:hello_world'))
-
-        else:
-            data_list = HelloWorld.objects.all()
-            return render(request, 'accountapp/hello_world.html',
-                          context={'data_list': data_list})
-    else:
-        # redirect 해라. 어디로? reverse ~~
-        # 이렇게 하면, 로그아웃 상태에서 hello_world로 가려고 하면 안 넘어가고 login 페이지로 감.
-        # 이 인증과정을 어디에 추가해야할까? update, detail veiw에!
-        return HttpResponseRedirect(reverse('accountapp:login'))
 
 class AccountCreateView(CreateView):
     model = User
@@ -81,7 +58,7 @@ class AccountUpdateView(UpdateView):
 class AccountDeleteView(DeleteView):
     model = User
     context_object_name = 'target_user'
-    success_url = reverse_lazy('accountapp:hello_world')
+    success_url = reverse_lazy('articleapp:list')
     template_name = 'accountapp/delete.html'
     
     # def get(self, request, *args, **kwargs):
