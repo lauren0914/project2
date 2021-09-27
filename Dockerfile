@@ -2,6 +2,8 @@ FROM python:3.9.0
 
 WORKDIR /home/
 
+RUN echo 'lksmaoidmf'
+
 RUN git clone https://github.com/lauren0914/project2.git
 
 WORKDIR /home/project2/
@@ -12,10 +14,9 @@ RUN pip install -r requirements.txt
 
 RUN pip install gunicorn
 
-RUN python manage.py migrate
+RUN pip install mysqlclient
 
-RUN python manage.py collectstatic
 
 EXPOSE 8000
 
-CMD ["gunicorn", "project2.wsgi", "--bind", "0.0.0.0:8000"]
+CMD ["bash", "-c", "python manage.py collectstatic --noinput --settings=project2.settings.deploy && python manage.py migrate --settings=project2.settings.deploy && gunicorn --env DJANGO_SETTINGS_MODULE=project2.settings.deploy project2.wsgi --bind 0.0.0.0:8000"]
