@@ -1,0 +1,60 @@
+version: "3.7"
+services:
+
+  nginx:
+    image: nginx:1.19.5
+    networks:
+      - project2_network
+    volumes:
+      - project2_media:/data/media/
+      - project2_static:/data/static/
+      - /home/ubuntu/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+
+  django:
+    image: project2_django:4
+    networks:
+      - project2_network
+    secrets:
+      - DJANGO_SECRET_KEY
+      - MARIADB_USER
+      - MARIADB_PASSWORD
+    volumes:
+      - project2_media:/home/project2/media/
+      - project2_static:/home/project2/staticfiles/
+
+  mariadb:
+    image: mariadb:10.5
+    networks:
+      - project2_network
+    secrets:
+      - MARIADB_USER
+      - MARIADB_PASSWORD
+      - MARIADB_ROOT_PASSWORD
+    volumes:
+      - gis_mariadb:/var/lib/mysql
+    environment:
+      MARIADB_DATABASE: django
+      MARIADB_USER_FILE: /run/secrets/MARIADB_USER
+      MARIADB_PASSWORD_FILE: /run/secrets/MARIADB_PASSWORD
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/MARIADB_ROOT_PASSWORD
+
+
+networks:
+  project2_network:
+
+volumes:
+  project2_media:
+  project2_static:
+  gis_mariadb:
+
+secrets:
+  DJANGO_SECRET_KEY:
+    external: true
+  MARIADB_USER:
+    external: true
+  MARIADB_PASSWORD:
+    external: true
+  MARIADB_ROOT_PASSWORD:
+    external: true
